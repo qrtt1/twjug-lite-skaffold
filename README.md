@@ -79,3 +79,6 @@ PS. 這不適用編譯工具在 image 內的情境，例如 GraalVM。
 2. 為了 kubernetes 的容器化
 
 
+# 參考影片
+
+* [Develop and Deploy to Kubernetes like a Googler by David Gageot](https://youtu.be/YYJ4RZFw4j8?t=1811)
