@@ -1,0 +1,29 @@
+diff --git a/02-spring-skaffold/Dockerfile.better_buildkit b/02-spring-skaffold/Dockerfile.better_buildkit
+new file mode 100644
+index 0000000..eb4f1a0
+--- /dev/null
++++ b/02-spring-skaffold/Dockerfile.better_buildkit
+@@ -0,0 +1,8 @@
++# syntax=docker/dockerfile:experimental
++FROM maven:3-jdk-11-openj9 as builder
++COPY . .
++RUN --mount=type=cache,target=/root/.m2 mvn package
++
++FROM openjdk:11
++CMD ["java", "-jar", "app.jar"]
++COPY --from=builder target/skaffold-0.0.1-SNAPSHOT.jar app.jar
+diff --git a/02-spring-skaffold/skaffold.yaml b/02-spring-skaffold/skaffold.yaml
+index 32f5838..4b57f80 100644
+--- a/02-spring-skaffold/skaffold.yaml
++++ b/02-spring-skaffold/skaffold.yaml
+@@ -4,7 +4,9 @@ build:
+   artifacts:
+   - image: gcr.io/k8s-skaffold/skaffold-example
+     docker:
+-      dockerfile: Dockerfile.bad_idea
++      dockerfile: Dockerfile.better_buildkit
++  local:
++    useBuildkit: true
+ deploy:
+   kubectl:
+     manifests:
