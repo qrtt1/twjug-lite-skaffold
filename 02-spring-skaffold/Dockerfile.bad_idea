@@ -1,0 +1,7 @@
+FROM maven:3-jdk-11-openj9 as builder
+COPY . .
+RUN mvn package
+
+FROM openjdk:11
+CMD ["java", "-jar", "app.jar"]
+COPY --from=builder target/skaffold-0.0.1-SNAPSHOT.jar app.jar
